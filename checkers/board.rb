@@ -33,6 +33,18 @@ class Board
     self[pos].nil?
   end
 
+  def dup
+    new_board = Board.new(false)
+    pieces.each do |piece|
+      Piece.new(piece.color, new_board, piece.pos)
+    end
+    new_board
+  end
+
+  def pieces
+    grid.flatten.compact
+  end
+
   def render
     color = [:default, :light_white]
     grid.each do |row|
