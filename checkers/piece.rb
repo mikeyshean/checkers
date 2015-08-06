@@ -23,17 +23,15 @@ class Piece
   end
 
   def perform_slide(new_pos)
-    row, col = pos
-    if valid_slide?(new_pos)
-      update_positions(new_pos)
-      true
-    else
-      false
-    end
+    return false if !valid_slide?(new_pos)
+    
+    update_positions(new_pos)
+    true
   end
 
   def perform_jump(new_pos)
     return false if !valid_jump?(new_pos)
+
     update_positions(new_pos, jumped_piece_pos)
     true
   end
@@ -77,10 +75,11 @@ class Piece
       return true if jumpable_piece?(jumped_piece_pos, landed_pos) &&
         landed_pos == new_pos
     end
+    false
   end
 
   def valid_slide?(new_pos)
-    return false unless board.empty?(new_pos)
+    return false if !board.empty?(new_pos)
 
     move_diffs.each do |delta|
      dx, dy  = delta
@@ -88,6 +87,7 @@ class Piece
 
      return true if [row + dx, col + dy] == new_pos
     end
+    false
   end
 
   def valid_move_sequence?(move_sequence)
@@ -122,7 +122,7 @@ class Piece
   end
 
   def move_diffs
-    DELTAS[:red] + DELTAS[:black] if king?
+    return DELTAS[:red] + DELTAS[:black] if king?
     DELTAS[color]
   end
 
