@@ -24,6 +24,11 @@ class Board
     self[pos] = piece
   end
 
+  def move_piece(piece, new_pos)
+    self[piece.pos] = nil
+    self[new_pos] = piece
+  end
+
   def empty?(pos)
     self[pos].nil?
   end

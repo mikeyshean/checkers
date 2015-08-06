@@ -14,6 +14,17 @@ class Piece
     color.to_s
   end
 
+  def perform_slide(new_pos)
+    row, col = pos
+     if valid_slide?(new_pos)
+       board.move_piece(self, new_pos)
+       self.pos = new_pos
+       true
+     else
+       false
+     end
+   end
+
   def valid_slide?(new_pos)
     slides = []
     row, col = pos
