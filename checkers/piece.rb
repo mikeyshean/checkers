@@ -2,6 +2,7 @@
 class Piece
 
   attr_reader :color, :board
+  attr_accessor :pos
 
   def initialize(color, board, pos)
     @color, @board, @pos = color, board, pos
@@ -11,6 +12,18 @@ class Piece
 
   def to_s
     color.to_s
+  end
+
+  def valid_slide?(new_pos)
+    slides = []
+    row, col = pos
+
+    move_diffs.each do |delta|
+     dx, dy  = delta
+     slides << [row + dx, col + dy] if board.empty?(new_pos)
+    end
+
+    slides.include?(new_pos)
   end
 
   def king?

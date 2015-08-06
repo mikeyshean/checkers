@@ -24,6 +24,11 @@ class Board
     self[pos] = piece
   end
 
+  def empty?(pos)
+    self[pos].nil?
+  end
+
+
   def render
     grid.each do |row|
       row = row.map { |el| el.nil? ? " " : el }
