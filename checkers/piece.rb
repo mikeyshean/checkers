@@ -10,7 +10,7 @@ class Piece
   }
 
   attr_reader :color, :board
-  attr_accessor :pos, :king, :jumped_pos
+  attr_accessor :pos, :king, :jumped_piece_pos
 
   def initialize(color, board, pos)
     @color, @board, @pos = color, board, pos
@@ -34,35 +34,8 @@ class Piece
 
   def perform_jump(new_pos)
     return false if !valid_jump?(new_pos)
-    update_positions(new_pos, jumped_pos)
+    update_positions(new_pos, jumped_piece_pos)
     true
-  end
-
-  private
-
-  def valid_jump?(new_pos)
-    return false if !board.empty?(new_pos)
-
-    move_diffs.each do |delta|
-      dx, dy = delta
-      row, col = pos
-
-      @jumped_pos = [row + dx, col + dy]
-      landed_pos = [row + (2 * dx), col + (2 * dy)]
-
-      return true if jumpable_piece?(jumped_pos, landed_pos)
-    end
-  end
-
-  def valid_slide?(new_pos)
-    return false unless board.empty?(new_pos)
-
-    move_diffs.each do |delta|
-     dx, dy  = delta
-     row, col = pos
-
-     return true if [row + dx, col + dy] == new_pos
-    end
   end
 
   def perform_moves(move_sequence)
@@ -76,9 +49,45 @@ class Piece
       return
     end
 
-    return true if move_sequence.all? { |move| perform_jump(move) }
+    prev_piece = self
+    move_sequence.each do |move|
 
-    raise InvalidMoveError.new("Invalid move sequence!")
+      if prev_piece.perform_jump(move)
+        prev_piece = board[move]
+      else
+        raise InvalidMoveError.new("Invalid move sequence!")
+      end
+    end
+
+    self
+  end
+
+  # private
+
+  def valid_jump?(new_pos)
+    return false if !board.empty?(new_pos)
+
+    move_diffs.each do |delta|
+      dx, dy = delta
+      row, col = pos
+
+      self.jumped_piece_pos = [row + dx, col + dy]
+      landed_pos = [row + (2 * dx), col + (2 * dy)]
+
+      return true if jumpable_piece?(jumped_piece_pos, landed_pos) &&
+        landed_pos == new_pos
+    end
+  end
+
+  def valid_slide?(new_pos)
+    return false unless board.empty?(new_pos)
+
+    move_diffs.each do |delta|
+     dx, dy  = delta
+     row, col = pos
+
+     return true if [row + dx, col + dy] == new_pos
+    end
   end
 
   def valid_move_sequence?(move_sequence)
@@ -95,12 +104,12 @@ class Piece
     end
   end
 
-  def update_positions(new_pos, jumped_pos = nil)
+  def update_positions(new_pos, jumped_piece_pos = nil)
     board[self.pos] = nil
     board[new_pos] = self
     self.pos = new_pos
 
-    board[jumped_pos] = nil unless jumped_pos.nil?
+    board[jumped_piece_pos] = nil unless jumped_piece_pos.nil?
     nil
   end
 
