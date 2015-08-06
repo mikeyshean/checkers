@@ -14,6 +14,7 @@ attr_reader :board, :players
 
   def play
     until over?
+      system("clear")
       board.render
       play_turn
       switch_players
