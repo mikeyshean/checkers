@@ -20,6 +20,10 @@ class Board
     @grid[row][col] = value
   end
 
+  def add_piece(piece, pos)
+    self[pos] = piece
+  end
+
   def render
     grid.each do |row|
       row = row.map { |el| el.nil? ? " " : el }
@@ -32,19 +36,25 @@ class Board
     return unless fillboard
 
     [:red, :black].each do |color|
-      [0,1,2].each do |row_delta|
+      (0..2).each do |row_delta|
         row = (color == :red ? 5 : 0)
         row += row_delta
-        (0...BOARD_SIZE).each do |col|
+
+        BOARD_SIZE.times do |col|
           case (row % 2)
           when 0
-            self[[row, col]] = Piece.new(color, [row, col]) if col % 2 == 1
+            Piece.new(color, self, [row, col]) if col % 2 == 1
           when 1
-            self[[row, col]] = Piece.new(color, [row, col]) if col % 2 == 0
+            Piece.new(color, self, [row, col]) if col % 2 == 0
           end
         end
       end
     end
   end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+  b = Board.new
+  b.render
 end
