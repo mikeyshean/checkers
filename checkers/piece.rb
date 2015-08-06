@@ -42,7 +42,7 @@ class Piece
 
 
   def valid_jump?(new_pos)
-    valid_jumps = []
+    return false if !board.empty?(new_pos)
 
     move_diffs.each do |delta|
       dx, dy = delta
@@ -51,23 +51,19 @@ class Piece
       jumped_pos = [row + dx, col + dy]
       landed_pos = [row + (2 * dx), col + (2 * dy)]
 
-      valid_jumps << landed_pos if jumpable_piece?(jumped_pos, landed_pos)
+      return true if jumpable_piece?(jumped_pos, landed_pos)
     end
-
-    valid_jumps.include?(new_pos)
   end
 
   def valid_slide?(new_pos)
-    valid_slides = []
+    return false unless board.empty?(new_pos)
 
     move_diffs.each do |delta|
      dx, dy  = delta
      row, col = pos
 
-     valid_slides << [row + dx, col + dy] if board.empty?(new_pos)
+     return true if [row + dx, col + dy] == new_pos
     end
-
-    valid_slides.include?(new_pos)
   end
 
   def king?
@@ -79,9 +75,7 @@ class Piece
   end
 
   def jumpable_piece?(jumped_pos, landed_pos)
-    !board.empty?(jumped_pos) &&
-      board[jumped_pos].color != color &&
-      board.empty?(landed_pos)
+    !board.empty?(jumped_pos) && board[jumped_pos].color != color
   end
 
 end
