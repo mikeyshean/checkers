@@ -1,4 +1,6 @@
 
+require 'colorize'
+
 class Piece
 
   attr_reader :color, :board
@@ -11,7 +13,7 @@ class Piece
   end
 
   def to_s
-    color.to_s
+    "\u229A".colorize(color)
   end
 
   def perform_slide(new_pos)
