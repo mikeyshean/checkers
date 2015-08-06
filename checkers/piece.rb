@@ -77,6 +77,27 @@ class Piece
     end
   end
 
+  def valid_move_sequence?(move_sequence)
+    new_board = board.dup
+    start_piece = new_board[pos]
+
+    begin
+      start_piece.perform_moves!(move_sequence)
+    rescue InvalidMoveError => e
+      puts e.message
+      false
+    else
+      true
+    end
+  end
+
+  def update_positions(new_pos)
+    board[self.pos] = nil
+    board[new_pos] = self
+    self.pos = new_pos
+    nil
+  end
+
   def king?
     @king
   end
