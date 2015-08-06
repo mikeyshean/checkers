@@ -72,7 +72,6 @@ class Piece
     return true if move_sequence.all? { |move| perform_jump(move) }
 
     raise InvalidMoveError.new("Invalid move sequence!")
-    end
   end
 
   def valid_move_sequence?(move_sequence)
