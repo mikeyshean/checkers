@@ -20,8 +20,7 @@ class Piece
   def perform_slide(new_pos)
     row, col = pos
     if valid_slide?(new_pos)
-      board.move_piece(self, new_pos)
-      self.pos = new_pos
+      update_positions(new_pos)
       true
     else
       false
@@ -29,15 +28,9 @@ class Piece
   end
 
   def perform_jump(new_pos)
-    row, col = pos
-
-    if valid_jump?(new_pos)
-      board.move_piece(self, new_pos)
-      self.pos = new_pos
-      true
-    else
-      false
-    end
+    return false if !valid_jump?(new_pos)
+    update_positions(new_pos)
+    true
   end
 
 
@@ -66,8 +59,12 @@ class Piece
     end
   end
 
+  def perform_moves(move_sequence)
+    perform_moves!(move_sequence) if valid_move_sequence?(move_sequence)
+  end
+
   def perform_moves!(move_sequence)
-    if move_sequence.count = 1
+    if move_sequence.count == 1
       perform_slide(move_sequence) || perform_jump(move_sequence)
       return
     elsif move_sequence.all? { |move| perform_jump(move) }
@@ -110,4 +107,7 @@ class Piece
     !board.empty?(jumped_pos) && board[jumped_pos].color != color
   end
 
+end
+
+class InvalidMoveError < StandardError
 end
