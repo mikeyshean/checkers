@@ -10,7 +10,7 @@ class Piece
   }
 
   attr_reader :color, :board
-  attr_accessor :pos, :jumped_pos
+  attr_accessor :pos, :king, :jumped_pos
 
   def initialize(color, board, pos)
     @color, @board, @pos = color, board, pos
@@ -66,6 +66,7 @@ class Piece
 
   def perform_moves(move_sequence)
     perform_moves!(move_sequence) if valid_move_sequence?(move_sequence)
+    maybe_promote
   end
 
   def perform_moves!(move_sequence)
@@ -104,6 +105,10 @@ class Piece
 
   def king?
     @king
+  end
+
+  def maybe_promote
+    self.king = true if (color == :red ? pos[0] == 0 : pos[0] == 7)
   end
 
   def move_diffs
