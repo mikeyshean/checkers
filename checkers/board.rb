@@ -35,7 +35,7 @@ class Board
 
 
   def render
-    color = [:light_white, :default]
+    color = [:default, :light_white]
     grid.each do |row|
       row = row.map { |el| el.nil? ? " " : el }
       row.each do |square|
@@ -73,4 +73,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
   b.render
+   b[[2,1]].perform_slide([3,2])
+   b[[3,2]].perform_slide([4,3])
+   b[[5,2]].perform_jump([3,4])
 end
