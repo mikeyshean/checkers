@@ -4,6 +4,11 @@ require 'byebug'
 
 class Piece
 
+  DELTAS = {
+    red:   [[-1, 1], [-1, -1]],
+    black: [[ 1, 1], [ 1, -1]],
+  }
+
   attr_reader :color, :board
   attr_accessor :pos, :jumped_pos
 
@@ -102,7 +107,8 @@ class Piece
   end
 
   def move_diffs
-    color == :red ? [[-1, 1], [-1, -1]] : [[1, 1], [1, -1]]
+    DELTAS[:red] + DELTAS[:black] if king?
+    DELTAS[color]
   end
 
   def jumpable_piece?(jumped_pos, landed_pos)
