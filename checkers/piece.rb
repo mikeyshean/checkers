@@ -19,42 +19,43 @@ class Piece
 
   def perform_slide(new_pos)
     row, col = pos
-     if valid_slide?(new_pos)
-       board.move_piece(self, new_pos)
-       self.pos = new_pos
-       true
-     else
-       false
-     end
-   end
+    if valid_slide?(new_pos)
+      board.move_piece(self, new_pos)
+      self.pos = new_pos
+      true
+    else
+      false
+    end
+  end
 
-   def perform_jump(new_pos)
-     row, col = pos
+  def perform_jump(new_pos)
+    row, col = pos
 
-     if valid_jump?(new_pos)
-       board.move_piece(self, new_pos)
-       self.pos = new_pos
-       true
-     else
-       false
-     end
-   end
+    if valid_jump?(new_pos)
+      board.move_piece(self, new_pos)
+      self.pos = new_pos
+      true
+    else
+      false
+    end
+  end
 
-   def valid_jump?(new_pos)
-     valid_jumps = []
 
-     move_diffs.each do |delta|
-       dx, dy = delta
-       row, col = pos
+  def valid_jump?(new_pos)
+    valid_jumps = []
 
-       jumped_pos = [row + dx, col + dy]
-       landed_pos = [row + (2 * dx), col + (2 * dy)]
+    move_diffs.each do |delta|
+      dx, dy = delta
+      row, col = pos
 
-       valid_jumps << landed_pos if jumpable_piece?(jumped_pos, landed_pos)
-     end
+      jumped_pos = [row + dx, col + dy]
+      landed_pos = [row + (2 * dx), col + (2 * dy)]
 
-     valid_jumps.include?(new_pos)
-   end
+      valid_jumps << landed_pos if jumpable_piece?(jumped_pos, landed_pos)
+    end
+
+    valid_jumps.include?(new_pos)
+  end
 
   def valid_slide?(new_pos)
     valid_slides = []
