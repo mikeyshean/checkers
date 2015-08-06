@@ -35,9 +35,15 @@ class Board
 
 
   def render
+    color = [:light_white, :default]
     grid.each do |row|
       row = row.map { |el| el.nil? ? " " : el }
-      puts row.join(" ")
+      row.each do |square|
+        print " #{square} ".colorize(:background => color.first)
+        color.rotate!
+      end
+      color.rotate!
+      print "\n"
     end
   end
 
