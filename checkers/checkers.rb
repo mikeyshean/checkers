@@ -5,16 +5,18 @@ class Game
 
 ORD_DELTA = 97
 
-attr_reader :board
+attr_reader :board, :players
 
   def initialize
     @board = Board.new
+    @players = [:red, :black]
   end
 
   def play
     until over?
       board.render
       play_turn
+      switch_players
     end
   end
 
@@ -22,7 +24,7 @@ attr_reader :board
     begin
       start_piece, move_sequence = get_move
       board[start_piece].perform_moves(move_sequence)
-    rescue InvalidMoveError => each
+    rescue InvalidMoveError => e
       puts e.message
       retry
     end
@@ -31,8 +33,13 @@ attr_reader :board
   def get_move
     print "Enter a move sequence: "
     sequence = convert(gets.chomp)
-
-    [sequence.first, sequence.drop(1)]
+    start_piece = sequence.first
+    if board.empty?(start_piece)
+      raise InvalidMoveError.new("There's no piece on that square!")
+    elsif board[start_piece].color != current_player
+      raise InvalidMoveError.new("That's not your piece!")
+    end
+    [start_piece, sequence.drop(1)]
   end
 
   def convert(sequence)
@@ -51,6 +58,14 @@ attr_reader :board
   end
 
   def over?
+  end
+
+  def switch_players
+    players.rotate!
+  end
+
+  def current_player
+    players.first
   end
 end
 
