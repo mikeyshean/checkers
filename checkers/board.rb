@@ -20,6 +20,13 @@ class Board
     @grid[row][col] = value
   end
 
+  def render
+    grid.each do |row|
+      row = row.map { |el| el.nil? ? " " : el }
+      puts row.join(" ")
+    end
+  end
+
   def populate_grid(fillboard)
     @grid = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
     return unless fillboard
