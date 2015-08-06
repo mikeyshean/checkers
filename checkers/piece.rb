@@ -67,10 +67,11 @@ class Piece
     if move_sequence.count == 1
       perform_slide(move_sequence) || perform_jump(move_sequence)
       return
-    elsif move_sequence.all? { |move| perform_jump(move) }
-      true
-    else
-      raise InvalidMoveError.new("Invalid move sequence!")
+    end
+
+    return true if move_sequence.all? { |move| perform_jump(move) }
+
+    raise InvalidMoveError.new("Invalid move sequence!")
     end
   end
 
