@@ -38,6 +38,7 @@ class Piece
     true
   end
 
+  private
 
   def valid_jump?(new_pos)
     return false if !board.empty?(new_pos)
