@@ -73,7 +73,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
   b.render
-   b[[2,1]].perform_slide([3,2])
-   b[[3,2]].perform_slide([4,3])
-   b[[5,2]].perform_jump([3,4])
+  p b[[2,1]].perform_slide([3,2])
+  p b[[3,2]].perform_slide([4,3])
+  p b[[5,2]].perform_jump([3,4])
 end
