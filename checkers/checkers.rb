@@ -28,7 +28,6 @@ attr_reader :board
     end
   end
 
-
   def get_move
     print "Enter a move sequence: "
     sequence = convert(gets.chomp)
