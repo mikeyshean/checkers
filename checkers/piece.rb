@@ -45,7 +45,7 @@ class Piece
 
   def perform_moves!(move_sequence)
     if move_sequence.count == 1
-      perform_slide(move_sequence) || perform_jump(move_sequence)
+      perform_slide(move_sequence.first) || perform_jump(move_sequence.first)
       return
     end
 

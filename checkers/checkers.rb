@@ -5,6 +5,8 @@ class Game
 
 ORD_DELTA = 97
 
+attr_reader :board
+
   def initialize
     @board = Board.new
   end
@@ -19,15 +21,19 @@ ORD_DELTA = 97
   def play_turn
     begin
       start_piece, move_sequence = get_move
+      board[start_piece].perform_moves(move_sequence)
+    rescue InvalidMoveError => each
+      puts e.message
+      retry
     end
-
   end
 
 
   def get_move
     print "Enter a move sequence: "
     sequence = convert(gets.chomp)
-    [sequence.first, [sequence.drop(1)]]
+
+    [sequence.first, sequence.drop(1)]
   end
 
   def convert(sequence)
@@ -44,4 +50,12 @@ ORD_DELTA = 97
 
     converted_sequence
   end
+
+  def over?
+  end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  game = Game.new
+  game.play
 end
