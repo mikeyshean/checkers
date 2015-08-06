@@ -59,7 +59,6 @@ class Piece
   def valid_slide?(new_pos)
     valid_slides = []
 
-
     move_diffs.each do |delta|
      dx, dy  = delta
      row, col = pos
@@ -83,7 +82,5 @@ class Piece
       board[jumped_pos].color != color &&
       board.empty?(landed_pos)
   end
-
-
 
 end

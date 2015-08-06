@@ -33,7 +33,6 @@ class Board
     self[pos].nil?
   end
 
-
   def render
     color = [:default, :light_white]
     grid.each do |row|
@@ -45,6 +44,7 @@ class Board
       color.rotate!
       print "\n"
     end
+    self
   end
 
   def populate_grid(fillboard)
@@ -66,6 +66,7 @@ class Board
         end
       end
     end
+    self
   end
 
 end
