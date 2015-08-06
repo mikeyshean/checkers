@@ -19,7 +19,7 @@ class Piece
   end
 
   def to_s
-    "\u229A".colorize(color)
+    (king? ? "\u2622" : "\u229A").colorize(color)
   end
 
   def perform_slide(new_pos)

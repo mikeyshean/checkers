@@ -46,7 +46,7 @@ class Board
   end
 
   def render
-    color = [:default, :light_white]
+    color = [:default, :white]
     grid.each do |row|
       row = row.map { |el| el.nil? ? " " : el }
       row.each do |square|
